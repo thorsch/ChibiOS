@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/spi_lld.h
- * @brief   LPC13xx low level SPI driver header.
+ * @file    LPC17xx/spi_lld.h
+ * @brief   LPC17xx low level SPI driver header.
  *
  * @addtogroup SPI
  * @{
@@ -38,7 +38,7 @@
 /**
  * @brief   Hardware FIFO depth.
  */
-#define LPC13xx_SSP_FIFO_DEPTH  8
+#define LPC17xx_SSP_FIFO_DEPTH  8
 
 #define CR0_DSSMASK             0x0F
 #define CR0_DSS4BIT             3
@@ -114,8 +114,8 @@
  * @details If set to @p TRUE the support for device SSP0 is included.
  * @note    The default is @p TRUE.
  */
-#if !defined(LPC13xx_SPI_USE_SSP0) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_USE_SSP0                TRUE
+#if !defined(LPC17xx_SPI_USE_SSP0) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_USE_SSP0                TRUE
 #endif
 
 /**
@@ -123,86 +123,86 @@
  * @details If set to @p TRUE the support for device SSP1 is included.
  * @note    The default is @p TRUE.
  */
-#if !defined(LPC13xx_SPI_USE_SSP1) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_USE_SSP1                FALSE
+#if !defined(LPC17xx_SPI_USE_SSP1) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_USE_SSP1                FALSE
 #endif
 
 /**
  * @brief   SSP0 PCLK divider.
  */
-#if !defined(LPC13xx_SPI_SSP0CLKDIV) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_SSP0CLKDIV              1
+#if !defined(LPC17xx_SPI_SSP0CLKDIV) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_SSP0CLKDIV              1
 #endif
 
 /**
  * @brief   SSP1 PCLK divider.
  */
-#if !defined(LPC13xx_SPI_SSP1CLKDIV) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_SSP1CLKDIV              1
+#if !defined(LPC17xx_SPI_SSP1CLKDIV) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_SSP1CLKDIV              1
 #endif
 
 /**
  * @brief   SPI0 interrupt priority level setting.
  */
-#if !defined(LPC13xx_SPI_SSP0_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_SSP0_IRQ_PRIORITY       5
+#if !defined(LPC17xx_SPI_SSP0_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_SSP0_IRQ_PRIORITY       5
 #endif
 
 /**
  * @brief   SPI1 interrupt priority level setting.
  */
-#if !defined(LPC13xx_SPI_SSP1_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_SSP1_IRQ_PRIORITY       5
+#if !defined(LPC17xx_SPI_SSP1_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_SSP1_IRQ_PRIORITY       5
 #endif
 
 /**
  * @brief   Overflow error hook.
  * @details The default action is to stop the system.
  */
-#if !defined(LPC13xx_SPI_SSP_ERROR_HOOK) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_SSP_ERROR_HOOK(spip)    chSysHalt()
+#if !defined(LPC17xx_SPI_SSP_ERROR_HOOK) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_SSP_ERROR_HOOK(spip)    chSysHalt()
 #endif
 
 /**
  * @brief   SCK0 signal selector.
  */
-#if !defined(LPC13xx_SPI_SCK0_SELECTOR) || defined(__DOXYGEN__)
-#define LPC13xx_SPI_SCK0_SELECTOR           SCK0_IS_PIO2_11
+#if !defined(LPC17xx_SPI_SCK0_SELECTOR) || defined(__DOXYGEN__)
+#define LPC17xx_SPI_SCK0_SELECTOR           SCK0_IS_PIO2_11
 #endif
 
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
-#if (LPC13xx_SPI_SSP0CLKDIV < 1) || (LPC13xx_SPI_SSP0CLKDIV > 255)
-#error "invalid LPC13xx_SPI_SSP0CLKDIV setting"
+#if (LPC17xx_SPI_SSP0CLKDIV < 1) || (LPC17xx_SPI_SSP0CLKDIV > 255)
+#error "invalid LPC17xx_SPI_SSP0CLKDIV setting"
 #endif
 
-#if (LPC13xx_SPI_SSP1CLKDIV < 1) || (LPC13xx_SPI_SSP1CLKDIV > 255)
-#error "invalid LPC13xx_SPI_SSP1CLKDIV setting"
+#if (LPC17xx_SPI_SSP1CLKDIV < 1) || (LPC17xx_SPI_SSP1CLKDIV > 255)
+#error "invalid LPC17xx_SPI_SSP1CLKDIV setting"
 #endif
 
-#if !LPC13xx_SPI_USE_SSP0 && !LPC13xx_SPI_USE_SSP1
+#if !LPC17xx_SPI_USE_SSP0 && !LPC17xx_SPI_USE_SSP1
 #error "SPI driver activated but no SPI peripheral assigned"
 #endif
 
-#if (LPC13xx_SPI_SCK0_SELECTOR != SCK0_IS_PIO0_10) &&                       \
-    (LPC13xx_SPI_SCK0_SELECTOR != SCK0_IS_PIO2_11) &&                       \
-    (LPC13xx_SPI_SCK0_SELECTOR != SCK0_IS_PIO0_6)
+#if (LPC17xx_SPI_SCK0_SELECTOR != SCK0_IS_PIO0_10) &&                       \
+    (LPC17xx_SPI_SCK0_SELECTOR != SCK0_IS_PIO2_11) &&                       \
+    (LPC17xx_SPI_SCK0_SELECTOR != SCK0_IS_PIO0_6)
 #error "invalid pin assigned to SCK0 signal"
 #endif
 
 /**
  * @brief   SSP0 clock.
  */
-#define LPC13xx_SPI_SSP0_PCLK                                               \
-  (LPC13xx_MAINCLK / LPC13xx_SPI_SSP0CLKDIV)
+#define LPC17xx_SPI_SSP0_PCLK                                               \
+  (LPC17xx_MAINCLK / LPC17xx_SPI_SSP0CLKDIV)
 
 /**
  * @brief   SSP1 clock.
  */
-#define LPC13xx_SPI_SSP1_PCLK                                               \
-  (LPC13xx_MAINCLK / LPC13xx_SPI_SSP1CLKDIV)
+#define LPC17xx_SPI_SSP1_PCLK                                               \
+  (LPC17xx_MAINCLK / LPC17xx_SPI_SSP1CLKDIV)
 
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
@@ -310,11 +310,11 @@ struct SPIDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if LPC13xx_SPI_USE_SSP0 && !defined(__DOXYGEN__)
+#if LPC17xx_SPI_USE_SSP0 && !defined(__DOXYGEN__)
 extern SPIDriver SPID1;
 #endif
 
-#if LPC13xx_SPI_USE_SSP1 && !defined(__DOXYGEN__)
+#if LPC17xx_SPI_USE_SSP1 && !defined(__DOXYGEN__)
 extern SPIDriver SPID2;
 #endif
 

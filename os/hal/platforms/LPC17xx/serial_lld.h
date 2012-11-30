@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/serial_lld.h
- * @brief   LPC13xx low level serial driver header.
+ * @file    LPC17xx/serial_lld.h
+ * @brief   LPC17xx low level serial driver header.
  *
  * @addtogroup SERIAL
  * @{
@@ -89,8 +89,8 @@
  * @details If set to @p TRUE the support for UART0 is included.
  * @note    The default is @p TRUE .
  */
-#if !defined(LPC13xx_SERIAL_USE_UART0) || defined(__DOXYGEN__)
-#define LPC13xx_SERIAL_USE_UART0            TRUE
+#if !defined(LPC17xx_SERIAL_USE_UART0) || defined(__DOXYGEN__)
+#define LPC17xx_SERIAL_USE_UART0            TRUE
 #endif
 
 /**
@@ -102,48 +102,48 @@
  *          also increase the worst case interrupt response time because the
  *          preload loops.
  */
-#if !defined(LPC13xx_SERIAL_FIFO_PRELOAD) || defined(__DOXYGEN__)
-#define LPC13xx_SERIAL_FIFO_PRELOAD         16
+#if !defined(LPC17xx_SERIAL_FIFO_PRELOAD) || defined(__DOXYGEN__)
+#define LPC17xx_SERIAL_FIFO_PRELOAD         16
 #endif
 
 /**
  * @brief   UART0 PCLK divider.
  */
-#if !defined(LPC13xx_SERIAL_UART0CLKDIV) || defined(__DOXYGEN__)
-#define LPC13xx_SERIAL_UART0CLKDIV          1
+#if !defined(LPC17xx_SERIAL_UART0CLKDIV) || defined(__DOXYGEN__)
+#define LPC17xx_SERIAL_UART0CLKDIV          1
 #endif
 
 /**
  * @brief   UART0 interrupt priority level setting.
  */
-#if !defined(LPC13xx_SERIAL_UART0_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_SERIAL_UART0_IRQ_PRIORITY   3
+#if !defined(LPC17xx_SERIAL_UART0_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_SERIAL_UART0_IRQ_PRIORITY   3
 #endif
 
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
-#if (LPC13xx_SERIAL_UART0CLKDIV < 1) || (LPC11xx_SERIAL_UART0CLKDIV > 255)
-#error "invalid LPC13xx_SERIAL_UART0CLKDIV setting"
+#if (LPC17xx_SERIAL_UART0CLKDIV < 1) || (LPC11xx_SERIAL_UART0CLKDIV > 255)
+#error "invalid LPC17xx_SERIAL_UART0CLKDIV setting"
 #endif
 
-#if (LPC13xx_SERIAL_FIFO_PRELOAD < 1) || (LPC13xx_SERIAL_FIFO_PRELOAD > 16)
-#error "invalid LPC13xx_SERIAL_FIFO_PRELOAD setting"
+#if (LPC17xx_SERIAL_FIFO_PRELOAD < 1) || (LPC17xx_SERIAL_FIFO_PRELOAD > 16)
+#error "invalid LPC17xx_SERIAL_FIFO_PRELOAD setting"
 #endif
 
 /**
  * @brief   UART0 clock.
  */
-#define  LPC13xx_SERIAL_UART0_PCLK                                          \
-  (LPC13xx_MAINCLK / LPC13xx_SERIAL_UART0CLKDIV)
+#define  LPC17xx_SERIAL_UART0_PCLK                                          \
+  (LPC17xx_MAINCLK / LPC17xx_SERIAL_UART0CLKDIV)
 
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
 /*===========================================================================*/
 
 /**
- * @brief   LPC13xx Serial Driver configuration structure.
+ * @brief   LPC17xx Serial Driver configuration structure.
  * @details An instance of this structure must be passed to @p sdStart()
  *          in order to configure and start a serial driver operations.
  */
@@ -189,7 +189,7 @@ typedef struct {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if LPC13xx_SERIAL_USE_UART0 && !defined(__DOXYGEN__)
+#if LPC17xx_SERIAL_USE_UART0 && !defined(__DOXYGEN__)
 extern SerialDriver SD1;
 #endif
 

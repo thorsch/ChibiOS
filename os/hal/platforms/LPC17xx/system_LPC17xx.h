@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_LPC13xx.h
+ * @file     system_LPC17xx.h
  * @brief    CMSIS Cortex-M3 Device Peripheral Access Layer Header File
- *           for the NXP LPC13xx Device Series
+ *           for the NXP LPC17xx Device Series
  * @version  V1.10
  * @date     24. November 2010
  *
@@ -23,8 +23,8 @@
  ******************************************************************************/
 
 
-#ifndef __SYSTEM_LPC13xx_H
-#define __SYSTEM_LPC13xx_H
+#ifndef __SYSTEM_LPC17xx_H
+#define __SYSTEM_LPC17xx_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,4 +61,4 @@ extern void SystemCoreClockUpdate (void);
 }
 #endif
 
-#endif /* __SYSTEM_LPC13xx_H */
+#endif /* __SYSTEM_LPC17xx_H */

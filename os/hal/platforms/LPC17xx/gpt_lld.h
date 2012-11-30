@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/gpt_lld.h
- * @brief   LPC13xx GPT subsystem low level driver header.
+ * @file    LPC17xx/gpt_lld.h
+ * @brief   LPC17xx GPT subsystem low level driver header.
  *
  * @addtogroup GPT
  * @{
@@ -44,8 +44,8 @@
  * @details If set to @p TRUE the support for GPT1 is included.
  * @note    The default is @p TRUE.
  */
-#if !defined(LPC13xx_GPT_USE_CT16B0) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_USE_CT16B0              TRUE
+#if !defined(LPC17xx_GPT_USE_CT16B0) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_USE_CT16B0              TRUE
 #endif
 
 /**
@@ -53,8 +53,8 @@
  * @details If set to @p TRUE the support for GPT2 is included.
  * @note    The default is @p TRUE.
  */
-#if !defined(LPC13xx_GPT_USE_CT16B1) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_USE_CT16B1              TRUE
+#if !defined(LPC17xx_GPT_USE_CT16B1) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_USE_CT16B1              TRUE
 #endif
 
 /**
@@ -62,8 +62,8 @@
  * @details If set to @p TRUE the support for GPT3 is included.
  * @note    The default is @p TRUE.
  */
-#if !defined(LPC13xx_GPT_USE_CT32B0) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_USE_CT32B0              TRUE
+#if !defined(LPC17xx_GPT_USE_CT32B0) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_USE_CT32B0              TRUE
 #endif
 
 /**
@@ -71,44 +71,44 @@
  * @details If set to @p TRUE the support for GPT4 is included.
  * @note    The default is @p TRUE.
  */
-#if !defined(LPC13xx_GPT_USE_CT32B1) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_USE_CT32B1              TRUE
+#if !defined(LPC17xx_GPT_USE_CT32B1) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_USE_CT32B1              TRUE
 #endif
 
 /**
  * @brief   GPT1 interrupt priority level setting.
  */
-#if !defined(LPC13xx_GPT_CT16B0_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_CT16B0_IRQ_PRIORITY     2
+#if !defined(LPC17xx_GPT_CT16B0_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_CT16B0_IRQ_PRIORITY     2
 #endif
 
 /**
  * @brief   GPT2 interrupt priority level setting.
  */
-#if !defined(LPC13xx_GPT_CT16B1_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_CT16B1_IRQ_PRIORITY     2
+#if !defined(LPC17xx_GPT_CT16B1_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_CT16B1_IRQ_PRIORITY     2
 #endif
 
 /**
  * @brief   GPT3 interrupt priority level setting.
  */
-#if !defined(LPC13xx_GPT_CT32B0_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_CT32B0_IRQ_PRIORITY     2
+#if !defined(LPC17xx_GPT_CT32B0_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_CT32B0_IRQ_PRIORITY     2
 #endif
 
 /**
  * @brief   GPT4 interrupt priority level setting.
  */
-#if !defined(LPC13xx_GPT_CT32B1_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define LPC13xx_GPT_CT32B1_IRQ_PRIORITY     2
+#if !defined(LPC17xx_GPT_CT32B1_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define LPC17xx_GPT_CT32B1_IRQ_PRIORITY     2
 #endif
 
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
-#if !LPC13xx_GPT_USE_CT16B0 && !LPC13xx_GPT_USE_CT16B1 &&                   \
-    !LPC13xx_GPT_USE_CT32B0 && !LPC13xx_GPT_USE_CT32B1
+#if !LPC17xx_GPT_USE_CT16B0 && !LPC17xx_GPT_USE_CT16B1 &&                   \
+    !LPC17xx_GPT_USE_CT32B0 && !LPC17xx_GPT_USE_CT32B1
 #error "GPT driver activated but no CT peripheral assigned"
 #endif
 
@@ -176,19 +176,19 @@ struct GPTDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if LPC13xx_GPT_USE_CT16B0 && !defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT16B0 && !defined(__DOXYGEN__)
 extern GPTDriver GPTD1;
 #endif
 
-#if LPC13xx_GPT_USE_CT16B1 && !defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT16B1 && !defined(__DOXYGEN__)
 extern GPTDriver GPTD2;
 #endif
 
-#if LPC13xx_GPT_USE_CT32B0 && !defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT32B0 && !defined(__DOXYGEN__)
 extern GPTDriver GPTD3;
 #endif
 
-#if LPC13xx_GPT_USE_CT32B1 && !defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT32B1 && !defined(__DOXYGEN__)
 extern GPTDriver GPTD4;
 #endif
 

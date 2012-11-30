@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/pal_lld.h
- * @brief   LPC13xx GPIO low level driver header.
+ * @file    LPC17xx/pal_lld.h
+ * @brief   LPC17xx GPIO low level driver header.
  *
  * @addtogroup PAL
  * @{
@@ -52,7 +52,7 @@ typedef struct {
   uint32_t      data;
   /** Initial value for FIO_DIR register.*/
   uint32_t      dir;
-} lpc13xx_gpio_setup_t;
+} LPC17xx_gpio_setup_t;
 
 /**
  * @brief   GPIO static initializer.
@@ -68,13 +68,13 @@ typedef struct {
  */
 typedef struct {
   /** @brief GPIO 0 setup data.*/
-  lpc13xx_gpio_setup_t   P0;
+  LPC17xx_gpio_setup_t   P0;
   /** @brief GPIO 1 setup data.*/
-  lpc13xx_gpio_setup_t   P1;
+  LPC17xx_gpio_setup_t   P1;
   /** @brief GPIO 2 setup data.*/
-  lpc13xx_gpio_setup_t   P2;
+  LPC17xx_gpio_setup_t   P2;
   /** @brief GPIO 3 setup data.*/
-  lpc13xx_gpio_setup_t   P3;
+  LPC17xx_gpio_setup_t   P3;
 } PALConfig;
 
 /**

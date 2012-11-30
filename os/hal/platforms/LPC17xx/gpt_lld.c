@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/gpt_lld.c
- * @brief   LPC13xx GPT subsystem low level driver source.
+ * @file    LPC17xx/gpt_lld.c
+ * @brief   LPC17xx GPT subsystem low level driver source.
  *
  * @addtogroup GPT
  * @{
@@ -39,7 +39,7 @@
  * @brief   GPT1 driver identifier.
  * @note    The driver GPT1 allocates the complex timer CT16B0 when enabled.
  */
-#if LPC13xx_GPT_USE_CT16B0 || defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT16B0 || defined(__DOXYGEN__)
 GPTDriver GPTD1;
 #endif
 
@@ -47,7 +47,7 @@ GPTDriver GPTD1;
  * @brief   GPT2 driver identifier.
  * @note    The driver GPT2 allocates the timer CT16B1 when enabled.
  */
-#if LPC13xx_GPT_USE_CT16B1 || defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT16B1 || defined(__DOXYGEN__)
 GPTDriver GPTD2;
 #endif
 
@@ -55,7 +55,7 @@ GPTDriver GPTD2;
  * @brief   GPT3 driver identifier.
  * @note    The driver GPT3 allocates the timer CT32B0 when enabled.
  */
-#if LPC13xx_GPT_USE_CT32B0 || defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT32B0 || defined(__DOXYGEN__)
 GPTDriver GPTD3;
 #endif
 
@@ -63,7 +63,7 @@ GPTDriver GPTD3;
  * @brief   GPT4 driver identifier.
  * @note    The driver GPT4 allocates the timer CT32B1 when enabled.
  */
-#if LPC13xx_GPT_USE_CT32B1 || defined(__DOXYGEN__)
+#if LPC17xx_GPT_USE_CT32B1 || defined(__DOXYGEN__)
 GPTDriver GPTD4;
 #endif
 
@@ -94,7 +94,7 @@ static void gpt_lld_serve_interrupt(GPTDriver *gptp) {
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#if LPC13xx_GPT_USE_CT16B0
+#if LPC17xx_GPT_USE_CT16B0
 /**
  * @brief   CT16B0 interrupt handler.
  *
@@ -108,9 +108,9 @@ CH_IRQ_HANDLER(VectorE4) {
 
   CH_IRQ_EPILOGUE();
 }
-#endif /* LPC13xx_GPT_USE_CT16B0 */
+#endif /* LPC17xx_GPT_USE_CT16B0 */
 
-#if LPC13xx_GPT_USE_CT16B1
+#if LPC17xx_GPT_USE_CT16B1
 /**
  * @brief   CT16B1 interrupt handler.
  *
@@ -124,9 +124,9 @@ CH_IRQ_HANDLER(VectorE8) {
 
   CH_IRQ_EPILOGUE();
 }
-#endif /* LPC13xx_GPT_USE_CT16B0 */
+#endif /* LPC17xx_GPT_USE_CT16B0 */
 
-#if LPC13xx_GPT_USE_CT32B0
+#if LPC17xx_GPT_USE_CT32B0
 /**
  * @brief   CT32B0 interrupt handler.
  *
@@ -140,9 +140,9 @@ CH_IRQ_HANDLER(VectorEC) {
 
   CH_IRQ_EPILOGUE();
 }
-#endif /* LPC13xx_GPT_USE_CT32B0 */
+#endif /* LPC17xx_GPT_USE_CT32B0 */
 
-#if LPC13xx_GPT_USE_CT32B1
+#if LPC17xx_GPT_USE_CT32B1
 /**
  * @brief   CT32B1 interrupt handler.
  *
@@ -156,7 +156,7 @@ CH_IRQ_HANDLER(VectorF0) {
 
   CH_IRQ_EPILOGUE();
 }
-#endif /* LPC13xx_GPT_USE_CT32B1 */
+#endif /* LPC17xx_GPT_USE_CT32B1 */
 
 /*===========================================================================*/
 /* Driver exported functions.                                                */
@@ -169,25 +169,25 @@ CH_IRQ_HANDLER(VectorF0) {
  */
 void gpt_lld_init(void) {
 
-#if LPC13xx_GPT_USE_CT16B0
+#if LPC17xx_GPT_USE_CT16B0
   /* Driver initialization.*/
   GPTD1.tmr = LPC_TMR16B0;
   gptObjectInit(&GPTD1);
 #endif
 
-#if LPC13xx_GPT_USE_CT16B1
+#if LPC17xx_GPT_USE_CT16B1
   /* Driver initialization.*/
   GPTD2.tmr = LPC_TMR16B1;
   gptObjectInit(&GPTD2);
 #endif
 
-#if LPC13xx_GPT_USE_CT32B0
+#if LPC17xx_GPT_USE_CT32B0
   /* Driver initialization.*/
   GPTD3.tmr = LPC_TMR32B0;
   gptObjectInit(&GPTD3);
 #endif
 
-#if LPC13xx_GPT_USE_CT32B1
+#if LPC17xx_GPT_USE_CT32B1
   /* Driver initialization.*/
   GPTD4.tmr = LPC_TMR32B1;
   gptObjectInit(&GPTD4);
@@ -206,25 +206,25 @@ void gpt_lld_start(GPTDriver *gptp) {
 
   if (gptp->state == GPT_STOP) {
     /* Clock activation.*/
-#if LPC13xx_GPT_USE_CT16B0
+#if LPC17xx_GPT_USE_CT16B0
     if (&GPTD1 == gptp) {
       LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 7);
       nvicEnableVector(TIMER_16_0_IRQn, CORTEX_PRIORITY_MASK(2));
     }
 #endif
-#if LPC13xx_GPT_USE_CT16B1
+#if LPC17xx_GPT_USE_CT16B1
     if (&GPTD2 == gptp) {
       LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 8);
       nvicEnableVector(TIMER_16_1_IRQn, CORTEX_PRIORITY_MASK(3));
     }
 #endif
-#if LPC13xx_GPT_USE_CT32B0
+#if LPC17xx_GPT_USE_CT32B0
     if (&GPTD3 == gptp) {
       LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 9);
       nvicEnableVector(TIMER_32_0_IRQn, CORTEX_PRIORITY_MASK(2));
     }
 #endif
-#if LPC13xx_GPT_USE_CT32B1
+#if LPC17xx_GPT_USE_CT32B1
     if (&GPTD4 == gptp) {
       LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 10);
       nvicEnableVector(TIMER_32_1_IRQn, CORTEX_PRIORITY_MASK(2));
@@ -233,8 +233,8 @@ void gpt_lld_start(GPTDriver *gptp) {
   }
 
   /* Prescaler value calculation.*/
-  pr = (uint16_t)((LPC13xx_SYSCLK / gptp->config->frequency) - 1);
-  chDbgAssert(((uint32_t)(pr + 1) * gptp->config->frequency) == LPC13xx_SYSCLK,
+  pr = (uint16_t)((LPC17xx_SYSCLK / gptp->config->frequency) - 1);
+  chDbgAssert(((uint32_t)(pr + 1) * gptp->config->frequency) == LPC17xx_SYSCLK,
               "gpt_lld_start(), #1", "invalid frequency");
 
   /* Timer configuration.*/
@@ -257,25 +257,25 @@ void gpt_lld_stop(GPTDriver *gptp) {
     gptp->tmr->MCR = 0;
     gptp->tmr->TCR = 0;
 
-#if LPC13xx_GPT_USE_CT16B0
+#if LPC17xx_GPT_USE_CT16B0
     if (&GPTD1 == gptp) {
       nvicDisableVector(TIMER_16_0_IRQn);
       LPC_SYSCON->SYSAHBCLKCTRL &= ~(1 << 7);
     }
 #endif
-#if LPC13xx_GPT_USE_CT16B1
+#if LPC17xx_GPT_USE_CT16B1
     if (&GPTD2 == gptp) {
       nvicDisableVector(TIMER_16_1_IRQn);
       LPC_SYSCON->SYSAHBCLKCTRL &= ~(1 << 8);
     }
 #endif
-#if LPC13xx_GPT_USE_CT32B0
+#if LPC17xx_GPT_USE_CT32B0
     if (&GPTD3 == gptp) {
       nvicDisableVector(TIMER_32_0_IRQn);
       LPC_SYSCON->SYSAHBCLKCTRL &= ~(1 << 9);
     }
 #endif
-#if LPC13xx_GPT_USE_CT32B1
+#if LPC17xx_GPT_USE_CT32B1
     if (&GPTD4 == gptp) {
       nvicDisableVector(TIMER_32_1_IRQn);
       LPC_SYSCON->SYSAHBCLKCTRL &= ~(1 << 10);

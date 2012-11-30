@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/spi_lld.c
- * @brief   LPC13xx low level SPI driver code.
+ * @file    LPC17xx/spi_lld.c
+ * @brief   LPC17xx low level SPI driver code.
  *
  * @addtogroup SPI
  * @{
@@ -35,12 +35,12 @@
 /* Driver exported variables.                                                */
 /*===========================================================================*/
 
-#if LPC13xx_SPI_USE_SSP0 || defined(__DOXYGEN__)
+#if LPC17xx_SPI_USE_SSP0 || defined(__DOXYGEN__)
 /** @brief SPI1 driver identifier.*/
 SPIDriver SPID1;
 #endif
 
-#if LPC13xx_SPI_USE_SSP1 || defined(__DOXYGEN__)
+#if LPC17xx_SPI_USE_SSP1 || defined(__DOXYGEN__)
 /** @brief SPI2 driver identifier.*/
 SPIDriver SPID2;
 #endif
@@ -60,8 +60,8 @@ SPIDriver SPID2;
  */
 static void ssp_fifo_preload(SPIDriver *spip) {
   LPC_SSP_TypeDef *ssp = spip->ssp;
-  uint32_t n = spip->txcnt > LPC13xx_SSP_FIFO_DEPTH ?
-               LPC13xx_SSP_FIFO_DEPTH : spip->txcnt;
+  uint32_t n = spip->txcnt > LPC17xx_SSP_FIFO_DEPTH ?
+               LPC17xx_SSP_FIFO_DEPTH : spip->txcnt;
 
   while(((ssp->SR & SR_TNF) != 0) && (n > 0)) {
     if (spip->txptr != NULL) {
@@ -94,7 +94,7 @@ static void spi_serve_interrupt(SPIDriver *spip) {
   if ((ssp->MIS & MIS_ROR) != 0) {
     /* The overflow condition should never happen because priority is given
        to receive but a hook macro is provided anyway...*/
-    LPC13xx_SPI_SSP_ERROR_HOOK(spip);
+    LPC17xx_SPI_SSP_ERROR_HOOK(spip);
   }
   ssp->ICR = ICR_RT | ICR_ROR;
   while ((ssp->SR & SR_RNE) != 0) {
@@ -132,7 +132,7 @@ static void spi_serve_interrupt(SPIDriver *spip) {
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#if LPC13xx_SPI_USE_SSP0 || defined(__DOXYGEN__)
+#if LPC17xx_SPI_USE_SSP0 || defined(__DOXYGEN__)
 /**
  * @brief   SSP0 interrupt handler.
  *
@@ -148,7 +148,7 @@ CH_IRQ_HANDLER(VectorF4) {
 }
 #endif
 
-#if LPC13xx_SPI_USE_SSP1 || defined(__DOXYGEN__)
+#if LPC17xx_SPI_USE_SSP1 || defined(__DOXYGEN__)
 /**
  * @brief   SSP1 interrupt handler.
  *
@@ -175,28 +175,28 @@ CH_IRQ_HANDLER(Vector124) {
  */
 void spi_lld_init(void) {
 
-#if LPC13xx_SPI_USE_SSP0
+#if LPC17xx_SPI_USE_SSP0
   spiObjectInit(&SPID1);
   SPID1.ssp = LPC_SSP0;
-  LPC_IOCON->SCK_LOC = LPC13xx_SPI_SCK0_SELECTOR;
-#if LPC13xx_SPI_SCK0_SELECTOR == SCK0_IS_PIO0_10
+  LPC_IOCON->SCK_LOC = LPC17xx_SPI_SCK0_SELECTOR;
+#if LPC17xx_SPI_SCK0_SELECTOR == SCK0_IS_PIO0_10
   LPC_IOCON->SWCLK_PIO0_10 = 0xC2;          /* SCK0 without resistors.      */
-#elif LPC13xx_SPI_SCK0_SELECTOR == SCK0_IS_PIO2_11
+#elif LPC17xx_SPI_SCK0_SELECTOR == SCK0_IS_PIO2_11
   LPC_IOCON->PIO2_11 = 0xC1;                /* SCK0 without resistors.      */
-#else /* LPC13xx_SPI_SCK0_SELECTOR == SCK0_IS_PIO0_6 */
+#else /* LPC17xx_SPI_SCK0_SELECTOR == SCK0_IS_PIO0_6 */
   LPC_IOCON->PIO0_6  = 0xC2;                /* SCK0 without resistors.      */
 #endif
   LPC_IOCON->PIO0_8  = 0xC1;                /* MISO0 without resistors.     */
   LPC_IOCON->PIO0_9  = 0xC1;                /* MOSI0 without resistors.     */
-#endif /* LPC13xx_SPI_USE_SSP0 */
+#endif /* LPC17xx_SPI_USE_SSP0 */
 
-#if LPC13xx_SPI_USE_SSP1
+#if LPC17xx_SPI_USE_SSP1
   spiObjectInit(&SPID2);
   SPID2.ssp = LPC_SSP1;
   LPC_IOCON->PIO2_1  = 0xC2;                /* SCK1 without resistors.      */
   LPC_IOCON->PIO2_2  = 0xC2;                /* MISO1 without resistors.     */
   LPC_IOCON->PIO2_3  = 0xC2;                /* MOSI1 without resistors.     */
-#endif /* LPC13xx_SPI_USE_SSP0 */
+#endif /* LPC17xx_SPI_USE_SSP0 */
 }
 
 /**
@@ -210,22 +210,22 @@ void spi_lld_start(SPIDriver *spip) {
 
   if (spip->state == SPI_STOP) {
     /* Clock activation.*/
-#if LPC13xx_SPI_USE_SSP0
+#if LPC17xx_SPI_USE_SSP0
     if (&SPID1 == spip) {
-      LPC_SYSCON->SSP0CLKDIV = LPC13xx_SPI_SSP0CLKDIV;
+      LPC_SYSCON->SSP0CLKDIV = LPC17xx_SPI_SSP0CLKDIV;
       LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 11);
       LPC_SYSCON->PRESETCTRL |= 1;
       nvicEnableVector(SSP0_IRQn,
-                       CORTEX_PRIORITY_MASK(LPC13xx_SPI_SSP0_IRQ_PRIORITY));
+                       CORTEX_PRIORITY_MASK(LPC17xx_SPI_SSP0_IRQ_PRIORITY));
     }
 #endif
-#if LPC13xx_SPI_USE_SSP1
+#if LPC17xx_SPI_USE_SSP1
     if (&SPID2 == spip) {
-      LPC_SYSCON->SSP1CLKDIV = LPC13xx_SPI_SSP1CLKDIV;
+      LPC_SYSCON->SSP1CLKDIV = LPC17xx_SPI_SSP1CLKDIV;
       LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 18);
       LPC_SYSCON->PRESETCTRL |= 4;
       nvicEnableVector(SSP1_IRQn,
-                       CORTEX_PRIORITY_MASK(LPC13xx_SPI_SSP1_IRQ_PRIORITY));
+                       CORTEX_PRIORITY_MASK(LPC17xx_SPI_SSP1_IRQ_PRIORITY));
     }
 #endif
   }
@@ -250,7 +250,7 @@ void spi_lld_stop(SPIDriver *spip) {
     spip->ssp->CR1  = 0;
     spip->ssp->CR0  = 0;
     spip->ssp->CPSR = 0;
-#if LPC13xx_SPI_USE_SSP0
+#if LPC17xx_SPI_USE_SSP0
     if (&SPID1 == spip) {
       LPC_SYSCON->PRESETCTRL &= ~1;
       LPC_SYSCON->SYSAHBCLKCTRL &= ~(1 << 11);
@@ -258,7 +258,7 @@ void spi_lld_stop(SPIDriver *spip) {
       nvicDisableVector(SSP0_IRQn);
     }
 #endif
-#if LPC13xx_SPI_USE_SSP1
+#if LPC17xx_SPI_USE_SSP1
     if (&SPID2 == spip) {
       LPC_SYSCON->PRESETCTRL &= ~4;
       LPC_SYSCON->SYSAHBCLKCTRL &= ~(1 << 18);

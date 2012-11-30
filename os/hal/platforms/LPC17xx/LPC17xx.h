@@ -1,10 +1,10 @@
 /****************************************************************************
-*   $Id:: LPC13xx.h 7402 2011-05-25 18:48:12Z usb00175                     $
-*   Project: NXP LPC13xx software example  
+*   $Id:: LPC17xx.h 7402 2011-05-25 18:48:12Z usb00175                     $
+*   Project: NXP LPC17xx software example
  *
 *   Description:
 *     CMSIS Cortex-M0 Core Peripheral Access Layer Header File for 
- *     NXP LPC13xx Device Series 
+ *     NXP LPC17xx Device Series
  *
 ****************************************************************************
 * Software that is described herein is for illustrative purposes only
@@ -21,15 +21,15 @@
 
 
 
-#ifndef __LPC13xx_H__
-#define __LPC13xx_H__
+#ifndef __LPC17xx_H__
+#define __LPC17xx_H__
 
 #ifdef __cplusplus
  extern "C" {
 #endif 
 
-/** @addtogroup LPC13xx_Definitions LPC13xx Definitions
-  This file defines all structures and symbols for LPC13xx:
+/** @addtogroup LPC17xx_Definitions LPC17xx Definitions
+  This file defines all structures and symbols for LPC17xx:
     - Registers and bitfields
     - peripheral base address
     - peripheral ID
@@ -41,7 +41,7 @@
 /******************************************************************************/
 /*                Processor and Core Peripherals                              */
 /******************************************************************************/
-/** @addtogroup LPC13xx_CMSIS LPC13xx CMSIS Definitions
+/** @addtogroup LPC17xx_CMSIS LPC17xx CMSIS Definitions
   Configuration of the Cortex-M3 Processor and Core Peripherals
   @{
 */
@@ -63,7 +63,7 @@ typedef enum IRQn
   PendSV_IRQn                   = -2,       /*!< 14 Cortex-M3 Pend SV Interrupt                   */
   SysTick_IRQn                  = -1,       /*!< 15 Cortex-M3 System Tick Interrupt               */
 
-/******  LPC13xx Specific Interrupt Numbers *******************************************************/
+/******  LPC17xx Specific Interrupt Numbers *******************************************************/
   WAKEUP0_IRQn                  = 0,        /*!< All I/O pins can be used as wakeup source.       */
   WAKEUP1_IRQn                  = 1,        /*!< There are 40 pins in total for LPC17xx           */
   WAKEUP2_IRQn                  = 2,
@@ -134,11 +134,11 @@ typedef enum IRQn
 #define __NVIC_PRIO_BITS          3         /*!< Number of Bits used for Priority Levels          */
 #define __Vendor_SysTickConfig    0         /*!< Set to 1 if different SysTick Config is used     */
 
-/*@}*/ /* end of group LPC13xx_CMSIS */
+/*@}*/ /* end of group LPC17xx_CMSIS */
 
 
 #include "core_cm3.h"                       /* Cortex-M3 processor and core peripherals           */
-#include "system_LPC13xx.h"                 /* System Header                                      */
+#include "system_LPC17xx.h"                 /* System Header                                      */
 
 
 /******************************************************************************/
@@ -150,7 +150,7 @@ typedef enum IRQn
 #endif
 
 /*------------- System Control (SYSCON) --------------------------------------*/
-/** @addtogroup LPC13xx_SYSCON LPC13xx System Control Block 
+/** @addtogroup LPC17xx_SYSCON LPC17xx System Control Block
   @{
 */
 typedef struct
@@ -231,11 +231,11 @@ typedef struct
        uint32_t RESERVED18[110];
   __I  uint32_t DEVICE_ID;              /*!< Offset: 0x3F4 (R/ )  Device ID Register */
 } LPC_SYSCON_TypeDef;
-/*@}*/ /* end of group LPC13xx_SYSCON */
+/*@}*/ /* end of group LPC17xx_SYSCON */
 
 
 /*------------- Pin Connect Block (IOCON) --------------------------------*/
-/** @addtogroup LPC13xx_IOCON LPC13xx I/O Configuration Block 
+/** @addtogroup LPC17xx_IOCON LPC17xx I/O Configuration Block
   @{
 */
 typedef struct
@@ -294,11 +294,11 @@ typedef struct
   __IO uint32_t DCD_LOC;                /*!< Offset: 0x0B8 DCD pin location select Register (R/W) */
   __IO uint32_t RI_LOC;                 /*!< Offset: 0x0BC RI pin location Register (R/W) */
 } LPC_IOCON_TypeDef;
-/*@}*/ /* end of group LPC13xx_IOCON */
+/*@}*/ /* end of group LPC17xx_IOCON */
 
 
 /*------------- Power Management Unit (PMU) --------------------------*/
-/** @addtogroup LPC13xx_PMU LPC13xx Power Management Unit
+/** @addtogroup LPC17xx_PMU LPC17xx Power Management Unit
   @{
 */
 typedef struct
@@ -310,11 +310,11 @@ typedef struct
   __IO uint32_t GPREG3;                 /*!< Offset: 0x010 (R/W)  General purpose Register 3 */
   __IO uint32_t GPREG4;                 /*!< Offset: 0x014 (R/W)  General purpose Register 4 */
 } LPC_PMU_TypeDef;
-/*@}*/ /* end of group LPC13xx_PMU */
+/*@}*/ /* end of group LPC17xx_PMU */
 
 
 /*------------- General Purpose Input/Output (GPIO) --------------------------*/
-/** @addtogroup LPC13xx_GPIO LPC13xx General Purpose Input/Output 
+/** @addtogroup LPC17xx_GPIO LPC17xx General Purpose Input/Output
   @{
 */
 typedef struct
@@ -336,11 +336,11 @@ typedef struct
   __I  uint32_t MIS;                    /*!< Offset: 0x8018 (R/ )  Masked interrupt status Register */
   __O  uint32_t IC;                     /*!< Offset: 0x801C ( /W)  Interrupt clear Register */
 } LPC_GPIO_TypeDef;
-/*@}*/ /* end of group LPC13xx_GPIO */
+/*@}*/ /* end of group LPC17xx_GPIO */
 
 
 /*------------- Timer (TMR) --------------------------------------------------*/
-/** @addtogroup LPC13xx_TMR LPC13xx 16/32-bit Counter/Timer 
+/** @addtogroup LPC17xx_TMR LPC17xx 16/32-bit Counter/Timer
   @{
 */
 typedef struct
@@ -363,11 +363,11 @@ typedef struct
   __IO uint32_t CTCR;                   /*!< Offset: 0x070 (R/W)  Count Control Register */
   __IO uint32_t PWMC;                   /*!< Offset: 0x074 (R/W)  PWM Control Register */
 } LPC_TMR_TypeDef;
-/*@}*/ /* end of group LPC13xx_TMR */
+/*@}*/ /* end of group LPC17xx_TMR */
 
 
 /*------------- Universal Asynchronous Receiver Transmitter (UART) -----------*/
-/** @addtogroup LPC13xx_UART LPC13xx Universal Asynchronous Receiver/Transmitter 
+/** @addtogroup LPC17xx_UART LPC17xx Universal Asynchronous Receiver/Transmitter
   @{
 */
 typedef struct
@@ -401,11 +401,11 @@ typedef struct
   __IO uint32_t  RS485DLY;              /*!< Offset: 0x054 (R/W)  RS-485/EIA-485 direction control delay Register */
 
 } LPC_UART_TypeDef;
-/*@}*/ /* end of group LPC13xx_UART */
+/*@}*/ /* end of group LPC17xx_UART */
 
 
 /*------------- Synchronous Serial Communication (SSP) -----------------------*/
-/** @addtogroup LPC13xx_SSP LPC13xx Synchronous Serial Port 
+/** @addtogroup LPC17xx_SSP LPC17xx Synchronous Serial Port
   @{
 */
 typedef struct
@@ -420,11 +420,11 @@ typedef struct
   __I  uint32_t MIS;                    /*!< Offset: 0x01C (R/ )  Masked Interrupt Status Register */
   __O  uint32_t ICR;                    /*!< Offset: 0x020 ( /W)  SSPICR Interrupt Clear Register */
 } LPC_SSP_TypeDef;
-/*@}*/ /* end of group LPC13xx_SSP */
+/*@}*/ /* end of group LPC17xx_SSP */
 
 
 /*------------- Inter-Integrated Circuit (I2C) -------------------------------*/
-/** @addtogroup LPC13xx_I2C LPC13xx I2C-Bus Interface 
+/** @addtogroup LPC17xx_I2C LPC17xx I2C-Bus Interface
   @{
 */
 typedef struct
@@ -446,11 +446,11 @@ typedef struct
   __IO uint32_t MASK2;                  /*!< Offset: 0x038 (R/W)  I2C Slave address mask register 2 */
   __IO uint32_t MASK3;                  /*!< Offset: 0x03C (R/W)  I2C Slave address mask register 3 */
 } LPC_I2C_TypeDef;
-/*@}*/ /* end of group LPC13xx_I2C */
+/*@}*/ /* end of group LPC17xx_I2C */
 
 
 /*------------- Windowed Watchdog Timer (WWDT) -----------------------------------------*/
-/** @addtogroup LPC13xx_WWDT LPC13xx Windowed WatchDog Timer 
+/** @addtogroup LPC17xx_WWDT LPC17xx Windowed WatchDog Timer
   @{
 */
 typedef struct
@@ -463,11 +463,11 @@ typedef struct
   __IO uint32_t WARNINT;				/*!< Offset: 0x014 Watchdog timer warning int. register (R/W) */
   __IO uint32_t WINDOW;					/*!< Offset: 0x018 Watchdog timer window value register (R/W) */
 } LPC_WWDT_TypeDef;
-/*@}*/ /* end of group LPC13xx_WWDT */
+/*@}*/ /* end of group LPC17xx_WWDT */
 
 
 /*------------- Analog-to-Digital Converter (ADC) ----------------------------*/
-/** @addtogroup LPC13xx_ADC LPC13xx Analog-to-Digital Converter 
+/** @addtogroup LPC17xx_ADC LPC17xx Analog-to-Digital Converter
   @{
 */
 typedef struct
@@ -479,11 +479,11 @@ typedef struct
   __IO uint32_t DR[8];                  /*!< Offset: 0x010 (R/W)  A/D Channel 0..7 Data Register */
   __I  uint32_t STAT;                   /*!< Offset: 0x030 (R/ )  A/D Status Register */
 } LPC_ADC_TypeDef;
-/*@}*/ /* end of group LPC13xx_ADC */
+/*@}*/ /* end of group LPC17xx_ADC */
 
 
 /*------------- Universal Serial Bus (USB) -----------------------------------*/
-/** @addtogroup LPC13xx_USB LPC13xx Universal Serial Bus 
+/** @addtogroup LPC17xx_USB LPC17xx Universal Serial Bus
   @{
 */
 typedef struct
@@ -503,7 +503,7 @@ typedef struct
   __IO uint32_t Ctrl;                   /*!< Offset: 0x028 (R/ )  USB Control Register */
   __O  uint32_t DevFIQSel;              /*!< Offset: 0x02C ( /W)  USB Device FIQ select Register */
 } LPC_USB_TypeDef;
-/*@}*/ /* end of group LPC13xx_USB */
+/*@}*/ /* end of group LPC17xx_USB */
 
 #if defined ( __CC_ARM   )
 #pragma no_anon_unions
@@ -567,4 +567,4 @@ typedef struct
 }
 #endif
 
-#endif  /* __LPC13xx_H__ */
+#endif  /* __LPC17xx_H__ */

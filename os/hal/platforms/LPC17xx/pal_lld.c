@@ -19,8 +19,8 @@
 */
 
 /**
- * @file    LPC13xx/pal_lld.c
- * @brief   LPC13xx GPIO low level driver code.
+ * @file    LPC17xx/pal_lld.c
+ * @brief   LPC17xx GPIO low level driver code.
  *
  * @addtogroup PAL
  * @{
@@ -51,10 +51,10 @@
 /* Driver exported functions.                                                */
 /*===========================================================================*/
 /**
- * @brief   LPC13xx I/O ports configuration.
+ * @brief   LPC17xx I/O ports configuration.
  * @details GPIO unit registers initialization.
  *
- * @param[in] config    the LPC13xx ports configuration
+ * @param[in] config    the LPC17xx ports configuration
  *
  * @notapi
  */
