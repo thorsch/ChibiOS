@@ -19,7 +19,7 @@
 */
 
 /**
- * @file    STM32/serial_lld.c
+ * @file    STM32/USARTv2/serial_lld.c
  * @brief   STM32 low level serial driver code.
  *
  * @addtogroup SERIAL
@@ -82,12 +82,6 @@ static const SerialConfig default_config =
 /* Driver local functions.                                                   */
 /*===========================================================================*/
 
-/* Local functions have different implementations depending on the USART type,
-   STM32F0xx devices and newer have an enhanced peripheral with slightly
-   different register interface.*/
-
-#if defined(STM32F0XX)
-
 /**
  * @brief   USART initialization.
  * @details This function must be invoked with interrupts disabled.
@@ -105,11 +99,11 @@ static void usart_init(SerialDriver *sdp, const SerialConfig *config) {
     u->BRR = STM32_PCLK / config->sc_speed;
 
   /* Note that some bits are enforced.*/
+  u->CR2 = config->sc_cr2 | USART_CR2_LBDIE;
+  u->CR3 = config->sc_cr3 | USART_CR3_EIE;
   u->CR1 = config->sc_cr1 | USART_CR1_UE | USART_CR1_PEIE |
                             USART_CR1_RXNEIE | USART_CR1_TE |
                             USART_CR1_RE;
-  u->CR2 = config->sc_cr2 | USART_CR2_LBDIE;
-  u->CR3 = config->sc_cr3 | USART_CR3_EIE;
   u->ICR = 0xFFFFFFFF;
 }
 
@@ -132,7 +126,7 @@ static void usart_deinit(USART_TypeDef *u) {
  * @param[in] sdp       pointer to a @p SerialDriver object
  * @param[in] isr       USART ISR register value
  */
-static void set_error(SerialDriver *sdp, uint16_t isr) {
+static void set_error(SerialDriver *sdp, uint32_t isr) {
   flagsmask_t sts = 0;
 
   if (isr & USART_ISR_ORE)
@@ -155,8 +149,8 @@ static void set_error(SerialDriver *sdp, uint16_t isr) {
  */
 static void serve_interrupt(SerialDriver *sdp) {
   USART_TypeDef *u = sdp->usart;
-  uint16_t cr1 = u->CR1;
-  uint16_t isr;
+  uint32_t cr1 = u->CR1;
+  uint32_t isr;
 
   /* Reading and clearing status.*/
   isr = u->ISR;
@@ -198,126 +192,6 @@ static void serve_interrupt(SerialDriver *sdp) {
     u->CR1 = cr1 & ~USART_CR1_TCIE;
   }
 }
-
-#else /* !defined(STM32F0XX) */
-
-/**
- * @brief   USART initialization.
- * @details This function must be invoked with interrupts disabled.
- *
- * @param[in] sdp       pointer to a @p SerialDriver object
- * @param[in] config    the architecture-dependent serial driver configuration
- */
-static void usart_init(SerialDriver *sdp, const SerialConfig *config) {
-  USART_TypeDef *u = sdp->usart;
-
-  /* Baud rate setting.*/
-#if STM32_HAS_USART6
-  if ((sdp->usart == USART1) || (sdp->usart == USART6))
-#else
-  if (sdp->usart == USART1)
-#endif
-    u->BRR = STM32_PCLK2 / config->sc_speed;
-  else
-    u->BRR = STM32_PCLK1 / config->sc_speed;
-
-  /* Note that some bits are enforced.*/
-  u->CR1 = config->sc_cr1 | USART_CR1_UE | USART_CR1_PEIE |
-                            USART_CR1_RXNEIE | USART_CR1_TE |
-                            USART_CR1_RE;
-  u->CR2 = config->sc_cr2 | USART_CR2_LBDIE;
-  u->CR3 = config->sc_cr3 | USART_CR3_EIE;
-  u->SR = 0;
-  (void)u->SR;  /* SR reset step 1.*/
-  (void)u->DR;  /* SR reset step 2.*/
-}
-
-/**
- * @brief   USART de-initialization.
- * @details This function must be invoked with interrupts disabled.
- *
- * @param[in] u         pointer to an USART I/O block
- */
-static void usart_deinit(USART_TypeDef *u) {
-
-  u->CR1 = 0;
-  u->CR2 = 0;
-  u->CR3 = 0;
-}
-
-/**
- * @brief   Error handling routine.
- *
- * @param[in] sdp       pointer to a @p SerialDriver object
- * @param[in] sr        USART SR register value
- */
-static void set_error(SerialDriver *sdp, uint16_t sr) {
-  flagsmask_t sts = 0;
-
-  if (sr & USART_SR_ORE)
-    sts |= SD_OVERRUN_ERROR;
-  if (sr & USART_SR_PE)
-    sts |= SD_PARITY_ERROR;
-  if (sr & USART_SR_FE)
-    sts |= SD_FRAMING_ERROR;
-  if (sr & USART_SR_NE)
-    sts |= SD_NOISE_ERROR;
-  chSysLockFromIsr();
-  chnAddFlagsI(sdp, sts);
-  chSysUnlockFromIsr();
-}
-
-/**
- * @brief   Common IRQ handler.
- *
- * @param[in] sdp       communication channel associated to the USART
- */
-static void serve_interrupt(SerialDriver *sdp) {
-  USART_TypeDef *u = sdp->usart;
-  uint16_t cr1 = u->CR1;
-  uint16_t sr = u->SR;  /* SR reset step 1.*/
-  uint16_t dr = u->DR;  /* SR reset step 2.*/
-
-  /* Error condition detection.*/
-  if (sr & (USART_SR_ORE | USART_SR_NE | USART_SR_FE  | USART_SR_PE))
-    set_error(sdp, sr);
-  /* Special case, LIN break detection.*/
-  if (sr & USART_SR_LBD) {
-    chSysLockFromIsr();
-    chnAddFlagsI(sdp, SD_BREAK_DETECTED);
-    chSysUnlockFromIsr();
-    u->SR &= ~USART_SR_LBD;
-  }
-  /* Data available.*/
-  if (sr & USART_SR_RXNE) {
-    chSysLockFromIsr();
-    sdIncomingDataI(sdp, (uint8_t)dr);
-    chSysUnlockFromIsr();
-  }
-  /* Transmission buffer empty.*/
-  if ((cr1 & USART_CR1_TXEIE) && (sr & USART_SR_TXE)) {
-    msg_t b;
-    chSysLockFromIsr();
-    b = chOQGetI(&sdp->oqueue);
-    if (b < Q_OK) {
-      chnAddFlagsI(sdp, CHN_OUTPUT_EMPTY);
-      u->CR1 = (cr1 & ~USART_CR1_TXEIE) | USART_CR1_TCIE;
-    }
-    else
-      u->DR = b;
-    chSysUnlockFromIsr();
-  }
-  /* Physical transmission end.*/
-  if (sr & USART_SR_TC) {
-    chSysLockFromIsr();
-    chnAddFlagsI(sdp, CHN_TRANSMISSION_END);
-    chSysUnlockFromIsr();
-    u->CR1 = cr1 & ~USART_CR1_TCIE;
-    u->SR &= ~USART_SR_TC;
-  }
-}
-
-#endif /* !defined(STM32F0XX) */
 
 #if STM32_SERIAL_USE_USART1 || defined(__DOXYGEN__)
 static void notify1(GenericQueue *qp) {

@@ -82,6 +82,13 @@
 *****************************************************************************
 
 *** 2.5.1 ***
+- FIX: Fixed wrong stack initializations in GCC STM32L1xx port files (bug
+  3591321)(backported to 2.4.3).
+- FIX: Fixed different redefinition for __main_stack_end__ symbol (bug
+  3591317)(backported to 2.4.3).
+- FIX: Fixed errors in STM32F0xx UART driver (bug 3589412).
+- FIX: Fixed workaround for errata in STM32F4-A devices (bug 3586425)
+  (backported to 2.4.3).
 - FIX: Fixed error in palWritePad() macro (bug 3586230)(backported to 2.2.10
   and 2.4.3).
 - FIX: Fixed missing ; in testmbox.c (bug 3585979)(backported to 2.4.3).
@@ -154,6 +161,11 @@
   ARMCMx port, now it can support multiple core types.
 - NEW: Updated the Power Architecture rules.mk file to put object and listing
   files into a ./build directory like ARM ports already do.
+- CHANGE: The STM32 Serial driver has been split in two distinct versions,
+  one for older devices up the STM32F4xx, the other for new devices starting
+  from the STM32F0xx.
+  (TODO: Update IAR and Keil projects because different paths, update
+         documentation projects).
 
 *** 2.5.0 ***
 - FIX: Fixed anomaly in USB enumeration (bug 3565325)(backported to 2.4.3).
