@@ -32,6 +32,10 @@
 #if HAL_USE_SERIAL || defined(__DOXYGEN__)
 
 /*===========================================================================*/
+/* Driver local definitions.                                                 */
+/*===========================================================================*/
+
+/*===========================================================================*/
 /* Driver exported variables.                                                */
 /*===========================================================================*/
 
@@ -93,10 +97,7 @@ static void usart_init(SerialDriver *sdp, const SerialConfig *config) {
   USART_TypeDef *u = sdp->usart;
 
   /* Baud rate setting.*/
-  if (sdp->usart == USART1)
-    u->BRR = STM32_USART1CLK / config->sc_speed;
-  else
-    u->BRR = STM32_PCLK / config->sc_speed;
+  u->BRR = (uint16_t)(sdp->clock / config->sc_speed);
 
   /* Note that some bits are enforced.*/
   u->CR2 = config->sc_cr2 | USART_CR2_LBDIE;
@@ -373,31 +374,37 @@ void sd_lld_init(void) {
 #if STM32_SERIAL_USE_USART1
   sdObjectInit(&SD1, NULL, notify1);
   SD1.usart = USART1;
+  SD1.clock = STM32_USART1CLK;
 #endif
 
 #if STM32_SERIAL_USE_USART2
   sdObjectInit(&SD2, NULL, notify2);
   SD2.usart = USART2;
+  SD2.clock = STM32_USART2CLK;
 #endif
 
 #if STM32_SERIAL_USE_USART3
   sdObjectInit(&SD3, NULL, notify3);
   SD3.usart = USART3;
+  SD3.clock = STM32_USART3CLK;
 #endif
 
 #if STM32_SERIAL_USE_UART4
   sdObjectInit(&SD4, NULL, notify4);
   SD4.usart = UART4;
+  SD4.clock = STM32_UART4CLK;
 #endif
 
 #if STM32_SERIAL_USE_UART5
   sdObjectInit(&SD5, NULL, notify5);
   SD5.usart = UART5;
+  SD5.clock = STM32_UART5CLK;
 #endif
 
 #if STM32_SERIAL_USE_USART6
   sdObjectInit(&SD6, NULL, notify6);
   SD6.usart = USART6;
+  SD6.clock = STM32_USART6CLK;
 #endif
 }
 

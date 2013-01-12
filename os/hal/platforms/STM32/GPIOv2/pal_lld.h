@@ -59,10 +59,13 @@
 #define PAL_STM32_OTYPE_OPENDRAIN       (1 << 2)
 
 #define PAL_STM32_OSPEED_MASK           (3 << 3)
-/* TODO: F0 and F3 are different from F2/F4 here.*/
 #define PAL_STM32_OSPEED_LOWEST         (0 << 3)
+#if defined(STM32F0XX) || defined(STM32F30X)
+#define PAL_STM32_OSPEED_MID            (1 << 3)
+#else
 #define PAL_STM32_OSPEED_MID1           (1 << 3)
 #define PAL_STM32_OSPEED_MID2           (2 << 3)
+#endif
 #define PAL_STM32_OSPEED_HIGHEST        (3 << 3)
 
 #define PAL_STM32_PUDR_MASK             (3 << 5)
@@ -92,9 +95,9 @@
 #define PAL_MODE_RESET                  PAL_STM32_MODE_INPUT
 
 /**
- * @brief   This mode is implemented as output.
+ * @brief   This mode is implemented as input with pull-up.
  */
-#define PAL_MODE_UNCONNECTED            PAL_STM32_MODE_OUTPUT
+#define PAL_MODE_UNCONNECTED            PAL_MODE_INPUT_PULLUP
 
 /**
  * @brief   Regular input high-Z pad.
