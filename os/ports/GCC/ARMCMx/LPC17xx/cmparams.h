@@ -19,13 +19,13 @@
 */
 
 /**
- * @file    GCC/ARMCMx/LPC13xx/cmparams.h
- * @brief   ARM Cortex-M3 LPC13xx Specific Parameters.
+ * @file    GCC/ARMCMx/LPC17xx/cmparams.h
+ * @brief   ARM Cortex-M3 LPC17xx Specific Parameters.
  *
- * @defgroup ARMCMx_LPC13xx LPC13xx Specific Parameters
+ * @defgroup ARMCMx_LPC17xx LPC17xx Specific Parameters
  * @ingroup ARMCMx_SPECIFIC
  * @details This file contains the Cortex-M3 specific parameters for the
- *          LPC13xx platform.
+ *          LPC17xx platform.
  * @{
  */
 

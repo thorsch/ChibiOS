@@ -42,7 +42,7 @@ const PALConfig pal_default_config = {
  */
 void __early_init(void) {
 
-  LPC13xx_clock_init();
+  LPC17xx_clock_init();
 }
 
 /*
