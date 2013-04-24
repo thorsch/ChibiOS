@@ -136,7 +136,7 @@ extern void Vector124(void);
 #endif
 
 /**
- * @brief   LPC13xx vectors table.
+ * @brief   LPC17xx vectors table.
  */
 #if !defined(__DOXYGEN__)
 __attribute__ ((section("vectors")))

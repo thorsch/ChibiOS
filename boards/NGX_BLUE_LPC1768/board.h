@@ -28,8 +28,8 @@
 /*
  * Board identifiers.
  */
-#define BOARD_OLIMEX_LPC_P1343
-#define BOARD_NAME "Olimex LPC-P1343"
+#define BOARD_NXG_LPC_1768
+#define BOARD_NAME "NXG BLUE LPC-1768"
 
 /*
  * Board frequencies.
