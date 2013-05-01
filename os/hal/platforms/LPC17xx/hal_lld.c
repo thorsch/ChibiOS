@@ -32,7 +32,7 @@
 /**
  * @brief   Register missing in NXP header file.
  */
-#define FLASHCFG (*((volatile uint32_t *)0x4003C010))
+#define FLASHCFG (*((volatile uint32_t *)0x400FC000))
 
 /*===========================================================================*/
 /* Driver exported variables.                                                */
@@ -81,7 +81,7 @@ void LPC17xx_clock_init(void) {
   unsigned i;
 
   /* Flash wait states setting, the code takes care to not touch TBD bits.*/
-  FLASHCFG = (FLASHCFG & ~3) | LPC17xx_FLASHCFG_FLASHTIM;
+  FLASHCFG = (FLASHCFG & ~(0xf << 12)) | LPC17xx_FLASHCFG_FLASHTIM<<12;
 
   /* System oscillator initialization if required.*/
 #if LPC17xx_MAINCLK_SOURCE == SYSMAINCLKSEL_PLLOUT

@@ -46,12 +46,16 @@
  */
 #define PLATFORM_NAME           "LPC17xx"
 
-#define IRCOSCCLK               12000000    /**< High speed internal clock. */
+#define IRCOSCCLK               4000000     /**< High speed internal clock. */
+#define SYSOSCCLK               12000000    /**< oscillator external clock. */
 #define WDGOSCCLK               1600000     /**< Watchdog internal clock.   */
+#define RTCOSCCLK               32000       /**< Real Time Clock oscillator */
 
 #define SYSPLLCLKSEL_IRCOSC     0           /**< Internal RC oscillator
                                                  clock source.              */
 #define SYSPLLCLKSEL_SYSOSC     1           /**< System oscillator clock
+                                                 source.                    */
+#define SYSPLLCLKSEL_RTCOSC     2           /**< RTC oscillator clock
                                                  source.                    */
 
 #define SYSMAINCLKSEL_IRCOSC    0           /**< Clock source is IRC.       */
@@ -122,6 +126,8 @@
 #define LPC17xx_SYSPLLCLKIN     SYSOSCCLK
 #elif LPC17xx_PLLCLK_SOURCE == SYSPLLCLKSEL_IRCOSC
 #define LPC17xx_SYSPLLCLKIN     IRCOSCCLK
+#elif LPC17xx_PLLCLK_SOURCE == SYSPLLCLKSEL_RTCOSC
+#define LPC17xx_SYSPLLCLKIN     RTCOSCCLK
 #else
 #error "invalid LPC17xx_PLLCLK_SOURCE clock source specified"
 #endif
@@ -182,8 +188,8 @@
  * @brief   AHB clock.
  */
 #define  LPC17xx_SYSCLK     (LPC17xx_MAINCLK / LPC17xx_SYSABHCLK_DIV)
-#if LPC17xx_SYSCLK > 72000000
-#error "AHB clock frequency out of the acceptable range (72MHz max)"
+#if LPC17xx_SYSCLK > 120000000
+#error "AHB clock frequency out of the acceptable range (120MHz max)"
 #endif
 
 /**
@@ -193,8 +199,14 @@
 #define LPC17xx_FLASHCFG_FLASHTIM   0
 #elif LPC17xx_SYSCLK <= 40000000
 #define LPC17xx_FLASHCFG_FLASHTIM   1
-#else
+#elif LPC17xx_SYSCLK <= 60000000
 #define LPC17xx_FLASHCFG_FLASHTIM   2
+#elif LPC17xx_SYSCLK <= 80000000
+#define LPC17xx_FLASHCFG_FLASHTIM   3
+#elif LPC17xx_SYSCLK <= 100000000
+#define LPC17xx_FLASHCFG_FLASHTIM   4
+#else
+#define LPC17xx_FLASHCFG_FLASHTIM   5
 #endif
 
 /*===========================================================================*/
