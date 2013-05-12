@@ -78,47 +78,39 @@ void hal_lld_init(void) {
  * @special
  */
 void LPC17xx_clock_init(void) {
-  unsigned i;
 
   /* Flash wait states setting, the code takes care to not touch TBD bits.*/
   FLASHCFG = (FLASHCFG & ~(0xf << 12)) | LPC17xx_FLASHCFG_FLASHTIM<<12;
 
   /* System oscillator initialization if required.*/
-#if LPC17xx_MAINCLK_SOURCE == SYSMAINCLKSEL_PLLOUT
 #if LPC17xx_PLLCLK_SOURCE == SYSPLLCLKSEL_SYSOSC
-  LPC_SYSCON->SYSOSCCTRL = LPC17xx_SYSOSCCTRL;
-  LPC_SYSCON->PDRUNCFG &= ~(1 << 5);            /* System oscillator ON.    */
-  for (i = 0; i < 200; i++)
+  LPC_SYSCON->SYSSCS = LPC17xx_SYSOSCCTRL<< 4 | (1 << 5);
+  while ((LPC_SYSCON->SYSSCS & (1 << 6)) ==0 )
     __NOP();                                    /* Stabilization delay.     */
 #endif /* LPC17xx_PLLCLK_SOURCE == SYSPLLCLKSEL_SYSOSC */
 
+  LPC_SYSCON->CLKSRCSEL = LPC17xx_PLLCLK_SOURCE;    /* Select Clock Source for PLL0       */
+  LPC_SYSCON->CCLKCFG   = LPC17xx_SYSCPUCLK_DIV;    /* Setup Clock Divider                */
+  LPC_SYSCON->PCLKSEL0  = PCLKSEL0_Val;             /* Peripheral Clock Selection         */
+  LPC_SYSCON->PCLKSEL1  = PCLKSEL1_Val;
+
+#if LPC17xx_MAINCLK_SOURCE == SYSMAINCLKSEL_PLLOUT
   /* PLL initialization if required.*/
-  LPC_SYSCON->SYSPLLCLKSEL = LPC17xx_PLLCLK_SOURCE;
-  LPC_SYSCON->SYSPLLCLKUEN = 1;                 /* Really required?         */
-  LPC_SYSCON->SYSPLLCLKUEN = 0;
-  LPC_SYSCON->SYSPLLCLKUEN = 1;
-  LPC_SYSCON->SYSPLLCTRL = LPC17xx_SYSPLLCTRL_MSEL | LPC17xx_SYSPLLCTRL_PSEL;
-  LPC_SYSCON->PDRUNCFG &= ~(1 << 7);            /* System PLL ON.           */
-  while ((LPC_SYSCON->SYSPLLSTAT & 1) == 0)     /* Wait PLL lock.           */
-    ;
-#endif /* LPC17xx_MAINCLK_SOURCE == SYSMAINCLKSEL_PLLOUT */
 
-  /* Main clock source selection.*/
-  LPC_SYSCON->MAINCLKSEL = LPC17xx_MAINCLK_SOURCE;
-  LPC_SYSCON->MAINCLKUEN = 1;                   /* Really required?         */
-  LPC_SYSCON->MAINCLKUEN = 0;
-  LPC_SYSCON->MAINCLKUEN = 1;
-  while ((LPC_SYSCON->MAINCLKUEN & 1) == 0)     /* Wait switch completion.  */
-    ;
+  LPC_SYSCON->SYSPLLCFG   = LPC17xx_SYSPLLCTRL_MSELO | (LPC17xx_SYSPLLCTRL_NSELO<< 16);
+  LPC_SYSCON->SYSPLLCON   = 0x01;             /* PLL0 Enable                        */
+  LPC_SYSCON->SYSPLLFEED  = 0xAA;
+  LPC_SYSCON->SYSPLLFEED  = 0x55;
+  while (!(LPC_SYSCON->SYSPLLSTAT & (1<<26)));/* Wait for PLOCK0                    */
 
-  /* ABH divider initialization, peripheral clocks are initially disabled,
-     the various device drivers will handle their own setup except GPIO and
-     IOCON that are left enabled.*/
-  LPC_SYSCON->SYSAHBCLKDIV = LPC17xx_SYSABHCLK_DIV;
-  LPC_SYSCON->SYSAHBCLKCTRL = 0x0001005F;
+  LPC_SYSCON->SYSPLLCON   = 0x03;             /* PLL0 Enable & Connect              */
+  LPC_SYSCON->SYSPLLFEED  = 0xAA;
+  LPC_SYSCON->SYSPLLFEED  = 0x55;
+#endif
+
 
   /* Memory remapping, vectors always in ROM.*/
-  LPC_SYSCON->SYSMEMREMAP = 2;
+//  LPC_SYSCON->SYSMEMREMAP = 2;
 }
 
 /** @} */

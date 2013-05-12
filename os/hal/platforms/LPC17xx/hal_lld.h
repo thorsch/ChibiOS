@@ -51,17 +51,15 @@
 #define WDGOSCCLK               1600000     /**< Watchdog internal clock.   */
 #define RTCOSCCLK               32000       /**< Real Time Clock oscillator */
 
-#define SYSPLLCLKSEL_IRCOSC     0           /**< Internal RC oscillator
+#define SYSCLKSEL_IRCOSC        0           /**< Internal RC oscillator
                                                  clock source.              */
-#define SYSPLLCLKSEL_SYSOSC     1           /**< System oscillator clock
+#define SYSCLKSEL_SYSOSC        1           /**< System oscillator clock
                                                  source.                    */
-#define SYSPLLCLKSEL_RTCOSC     2           /**< RTC oscillator clock
+#define SYSCLKSEL_RTCOSC        2           /**< RTC oscillator clock
                                                  source.                    */
 
-#define SYSMAINCLKSEL_IRCOSC    0           /**< Clock source is IRC.       */
-#define SYSMAINCLKSEL_PLLIN     1           /**< Clock source is PLLIN.     */
-#define SYSMAINCLKSEL_WDGOSC    2           /**< Clock source is WDGOSC.    */
-#define SYSMAINCLKSEL_PLLOUT    3           /**< Clock source is PLLOUT.    */
+#define SYSMAINCLKSEL_PLLIN     0           /**< Clock source is PLLIN.     */
+#define SYSMAINCLKSEL_PLLOUT    1           /**< Clock source is PLLOUT.    */
 
 /*===========================================================================*/
 /* Driver pre-compile time settings.                                         */
@@ -71,25 +69,27 @@
  * @brief   System PLL clock source.
  */
 #if !defined(LPC17xx_PLLCLK_SOURCE) || defined(__DOXYGEN__)
-#define LPC17xx_PLLCLK_SOURCE               SYSPLLCLKSEL_SYSOSC
+#define LPC17xx_PLLCLK_SOURCE               SYSCLKSEL_SYSOSC
 #endif
 
 /**
  * @brief   System PLL multiplier.
- * @note    The value must be in the 1..32 range and the final frequency
+ * @note    The value must be in the 6..512 range and the final frequency
  *          must not exceed the CCO ratings.
  */
 #if !defined(LPC17xx_SYSPLL_MUL) || defined(__DOXYGEN__)
-#define LPC17xx_SYSPLL_MUL                  6
+#define LPC17xx_SYSPLL_MUL                  25
 #endif
 
 /**
- * @brief   System PLL divider.
- * @note    The value must be chosen between (2, 4, 8, 16).
+ * @brief   System PLL Pre-divider.
+ * @note    The value must be in the 1..32 range and the final frequency
+ *          must not exceed the CCO ratings.
  */
 #if !defined(LPC17xx_SYSPLL_DIV) || defined(__DOXYGEN__)
-#define LPC17xx_SYSPLL_DIV                  4
+#define LPC17xx_SYSPLL_DIV                  2
 #endif
+
 
 /**
  * @brief   System main clock source.
@@ -99,11 +99,11 @@
 #endif
 
 /**
- * @brief   AHB clock divider.
+ * @brief   CPU clock divider.
  * @note    The value must be chosen between (1...255).
  */
-#if !defined(LPC17xx_SYSCLK_DIV) || defined(__DOXYGEN__)
-#define LPC17xx_SYSABHCLK_DIV               1
+#if !defined(LPC17xx_SYSCPUCLK_DIV) || defined(__DOXYGEN__)
+#define LPC17xx_SYSCPUCLK_DIV               3
 #endif
 
 /*===========================================================================*/
@@ -135,36 +135,30 @@
 /**
  * @brief   MSEL mask in SYSPLLCTRL register.
  */
-#if (LPC17xx_SYSPLL_MUL >= 1) && (LPC17xx_SYSPLL_MUL <= 32) ||              \
+#if (LPC17xx_SYSPLL_MUL >= 1) && (LPC17xx_SYSPLL_MUL <= 512) ||              \
     defined(__DOXYGEN__)
-#define LPC17xx_SYSPLLCTRL_MSEL (LPC17xx_SYSPLL_MUL - 1)
+#define LPC17xx_SYSPLLCTRL_MSELO (LPC17xx_SYSPLL_MUL - 1)
 #else
-#error "LPC17xx_SYSPLL_MUL out of range (1...32)"
+#error "LPC17xx_SYSPLL_MUL out of range (1...512)"
 #endif
 
 /**
  * @brief   PSEL mask in SYSPLLCTRL register.
  */
-#if (LPC17xx_SYSPLL_DIV == 2) || defined(__DOXYGEN__)
-#define LPC17xx_SYSPLLCTRL_PSEL (0 << 5)
-#elif LPC17xx_SYSPLL_DIV == 4
-#define LPC17xx_SYSPLLCTRL_PSEL (1 << 5)
-#elif LPC17xx_SYSPLL_DIV == 8
-#define LPC17xx_SYSPLLCTRL_PSEL (2 << 5)
-#elif LPC17xx_SYSPLL_DIV == 16
-#define LPC17xx_SYSPLLCTRL_PSEL (3 << 5)
+#if (LPC17xx_SYSPLL_DIV >= 2) && (LPC17xx_SYSPLL_DIV <= 32)|| defined(__DOXYGEN__)
+#define LPC17xx_SYSPLLCTRL_NSEL0 (LPC17xx_SYSPLL_DIV -1)
 #else
-#error "invalid LPC17xx_SYSPLL_DIV value (2,4,8,16)"
+#error "LPC17xx_SYSPLL_DIV out of range (2...22)"
 #endif
 
 /**
  * @brief   CCP frequency.
  */
-#define  LPC17xx_SYSPLLCCO   (LPC17xx_SYSPLLCLKIN * LPC17xx_SYSPLL_MUL *    \
+#define  LPC17xx_SYSPLLCCO   ((2 * LPC17xx_SYSPLLCLKIN * LPC17xx_SYSPLL_MUL) /    \
                               LPC17xx_SYSPLL_DIV)
 
-#if (LPC17xx_SYSPLLCCO < 156000000) || (LPC17xx_SYSPLLCCO > 320000000)
-#error "CCO frequency out of the acceptable range (156...320)"
+#if (LPC17xx_SYSPLLCCO < 275000000) || (LPC17xx_SYSPLLCCO > 550000000)
+#error "FCCO frequency out of the acceptable range (275...550)"
 #endif
 
 /**
@@ -187,9 +181,9 @@
 /**
  * @brief   AHB clock.
  */
-#define  LPC17xx_SYSCLK     (LPC17xx_MAINCLK / LPC17xx_SYSABHCLK_DIV)
+#define  LPC17xx_SYSCLK     (LPC17xx_MAINCLK / LPC17xx_SYSCPUCLK_DIV)
 #if LPC17xx_SYSCLK > 120000000
-#error "AHB clock frequency out of the acceptable range (120MHz max)"
+#error "CPU clock frequency out of the acceptable range (120MHz max)"
 #endif
 
 /**

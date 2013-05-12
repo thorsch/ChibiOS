@@ -155,15 +155,57 @@ typedef enum IRQn
 */
 typedef struct
 {
-  __IO uint32_t SYSMEMREMAP;            /*!< Offset: 0x000 (R/W)  System memory remap Register */
-  __IO uint32_t PRESETCTRL;             /*!< Offset: 0x004 (R/W)  Peripheral reset control Register */
-  __IO uint32_t SYSPLLCTRL;             /*!< Offset: 0x008 (R/W)  System PLL control Register */
-  __I  uint32_t SYSPLLSTAT;             /*!< Offset: 0x00C (R/ )  System PLL status Register */
-  __IO uint32_t USBPLLCTRL;      /* USB PLL control, offset 0x10 */
-  __IO uint32_t USBPLLSTAT;
-       uint32_t RESERVED0[2];
+  __IO uint32_t FLASHCFG;               /*!< Offset: 0x000 (R/W)  flash timing configuration Register */
+       uint32_t RESERVED0[3];
+       uint32_t RESERVED1[28];
 
-  __IO uint32_t SYSOSCCTRL;             /*!< Offset: 0x020 (R/W)  System oscillator control Register */
+  __IO uint32_t SYSPLLCON;              /*!< Offset: 0x080 (R/W)  System PLL control Register */
+  __IO uint32_t SYSPLLCFG;              /*!< Offset: 0x084 (R/W)  System PLL configuration Register */
+  __I  uint32_t SYSPLLSTAT;             /*!< Offset: 0x088 (R/ )  System PLL status Register */
+  __O  uint32_t SYSPLLFEED;             /*!< Offset: 0x08C ( /W)  System PLL feed Register */
+
+       uint32_t RESERVED2[4];
+  __IO uint32_t USBPLLCON;              /*!< Offset: 0x0A0 (R/W)  USB PLL control Register */
+  __IO uint32_t USBPLLCFG;              /*!< Offset: 0x0A4 (R/W)  USB PLL configuration Register */
+  __I  uint32_t USBPLLSTAT;             /*!< Offset: 0x0A8 (R/ )  USB PLL status Register */
+  __O  uint32_t USBPLLFEED;             /*!< Offset: 0x0AC ( /W)  USB PLL feed Register */
+
+       uint32_t RESERVED3[4];
+
+  __IO uint32_t SYSPCON;                /*!< Offset: 0x0C0 (R/W)  Power control Register */
+  __IO uint32_t SYSPCONP;               /*!< Offset: 0x0C4 (R/W)  Peripheral Power control Register */
+       uint32_t RESERVED4[2];
+
+       uint32_t RESERVED5[12];
+
+       uint32_t RESERVED6;              /*!< Offset: 0x100 (R/ )  na */
+  __IO uint32_t CCLKCFG;                /*!< Offset: 0x104 (R/W)  CPU Clock Configuration Register */
+  __IO uint32_t USBCCLKCFG;             /*!< Offset: 0x108 (R/W)  USB Clock Configuration Register */
+  __IO uint32_t CLKSRCSEL;              /*!< Offset: 0x10C (R/W)  Clock Source Select Register */
+
+       uint32_t RESERVED7[12];
+
+  __IO uint32_t EXTINT;                 /*!< Offset: 0x140 (R/W)  External Interrupt Flag Register */
+       uint32_t RESERVED8;
+  __IO uint32_t EXTMODE;                /*!< Offset: 0x148 (R/W)  External Interrupt Mode Register */
+  __IO uint32_t EXTPOLAR;               /*!< Offset: 0x14C (R/W)  External Interrupt Polarity Register */
+
+       uint32_t RESERVED9[12];
+
+  __IO uint32_t SYSRSID;                /*!< Offset: 0x180 (R/W)  Reset Source Identification Register */
+       uint32_t RESERVED10[7];
+
+  __IO uint32_t SYSSCS;                 /*!< Offset: 0x1A0 (R/W)  System Control and Status Register */
+       uint32_t RESERVED11;
+  __IO uint32_t PCLKSEL0;               /*!< Offset: 0x1A8 (R/W)  Peripheral Clock selection Register 0 */
+  __IO uint32_t PCLKSEL1;               /*!< Offset: 0x1Ac (R/W)  Peripheral Clock selection Register 1  */
+
+       uint32_t RESERVED12[6];
+
+  __IO uint32_t CLKOUTCFG;              /*!< Offset: 0x1C8 (R/W)  Clock Output Configuration Register */
+
+
+#if 0
   __IO uint32_t WDTOSCCTRL;             /*!< Offset: 0x024 (R/W)  Watchdog oscillator control Register */
   __IO uint32_t IRCCTRL;                /*!< Offset: 0x028 (R/W)  IRC control Register */
        uint32_t RESERVED1[1];
@@ -230,6 +272,7 @@ typedef struct
   __IO uint32_t PDRUNCFG;               /*!< Offset: 0x238 (R/W)  Power-down configuration Register*/
        uint32_t RESERVED18[110];
   __I  uint32_t DEVICE_ID;              /*!< Offset: 0x3F4 (R/ )  Device ID Register */
+#endif
 } LPC_SYSCON_TypeDef;
 /*@}*/ /* end of group LPC17xx_SYSCON */
 
